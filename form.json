@@ -7,7 +7,7 @@
       "elements": [
         {
           "type": "text",
-          "name": "fullName",
+          "name": "name",
           "title": "Full Name",
           "isRequired": true,
           "placeHolder": "John Doe"
@@ -27,7 +27,7 @@
         },
         {
           "type": "text",
-          "name": "phoneNumber",
+          "name": "phone",
           "title": "Phone Number",
           "inputType": "tel",
           "isRequired": true,
@@ -49,7 +49,7 @@
         },
         {
           "type": "dropdown",
-          "name": "leadType",
+          "name": "label",
           "title": "Lead Type",
           "isRequired": true,
           "choices": [
@@ -61,7 +61,7 @@
         },
         {
           "type": "text",
-          "name": "dealSize",
+          "name": "deal_size",
           "title": "Estimated Deal Size ($)",
           "inputType": "number",
           "placeHolder": "e.g., 500000",
@@ -75,7 +75,7 @@
         },
         {
           "type": "comment",
-          "name": "additionalNotes",
+          "name": "note",
           "title": "Additional Notes or Requirements",
           "placeHolder": "Describe any relevant information..."
         }
