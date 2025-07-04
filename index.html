@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Survey Form</title>
 
   <!-- SurveyJS Styles -->
   <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet" />
 
-  <!-- SurveyJS Scripts -->
+  <!-- SurveyJS Libraries -->
   <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
   <script src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
 
@@ -33,61 +33,56 @@
       background: #ffe0e0;
       border: 1px solid red;
       border-radius: 6px;
+      display: none;
     }
 
     .success-message {
       margin-top: 20px;
       font-weight: bold;
       color: green;
+      display: none;
     }
   </style>
 </head>
 <body>
+
   <h1>Survey Form</h1>
+
   <div id="surveyContainer"></div>
-  <div id="errorContainer" class="error-message" style="display: none;"></div>
-  <div id="successContainer" class="success-message" style="display: none;"></div>
+  <div id="errorContainer" class="error-message"></div>
+  <div id="successContainer" class="success-message">Thank you for submitting the form!</div>
 
   <script>
+    const GITHUB_JSON_URL = "https://raw.githubusercontent.com/Arooha-Khan/Survey-JS-Form-test/refs/heads/main/form.json";
+
     const surveyContainer = document.getElementById("surveyContainer");
     const errorContainer = document.getElementById("errorContainer");
     const successContainer = document.getElementById("successContainer");
 
-    // Load the form.json file
-    fetch("form.json")
+    fetch(GITHUB_JSON_URL)
       .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
         return response.json();
       })
       .then(surveyJSON => {
-        try {
-          const survey = new Survey.Model(surveyJSON);
+        const survey = new Survey.Model(surveyJSON);
 
-          // Show success message on completion
-          survey.onComplete.add(function (sender) {
-            console.log("Survey results:", sender.data);
-            successContainer.style.display = "block";
-            successContainer.innerText = "Thank you for submitting the form!";
-          });
+        survey.onComplete.add(function (sender) {
+          console.log("Survey results:", sender.data);
+          successContainer.style.display = "block";
+        });
 
-          Survey.StylesManager.applyTheme("defaultV2");
-          ko.applyBindings({ model: survey }, surveyContainer);
-        } catch (err) {
-          showError("Invalid survey JSON structure. Please check form.json.");
-          console.error(err);
-        }
+        Survey.StylesManager.applyTheme("defaultV2");
+        ko.applyBindings({ model: survey }, surveyContainer);
       })
       .catch(err => {
-        showError("Error loading form.json: " + err.message);
+        errorContainer.style.display = "block";
+        errorContainer.innerText = "Error loading survey: " + err.message;
         console.error(err);
       });
-
-    function showError(message) {
-      errorContainer.style.display = "block";
-      errorContainer.innerText = message;
-    }
   </script>
+
 </body>
 </html>
